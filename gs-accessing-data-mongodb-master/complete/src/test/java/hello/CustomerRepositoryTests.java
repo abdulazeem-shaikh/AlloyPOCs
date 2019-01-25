@@ -28,8 +28,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Example;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.test.dao.Customer;
-import com.test.daoImpl.CustomerRepository;
+import com.test.model.Customer;
+import com.test.repository.CustomerRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

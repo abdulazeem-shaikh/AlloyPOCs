@@ -1,10 +1,10 @@
-package com.test.daoImpl;
+package com.test.repository;
 
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.test.dao.Customer;
+import com.test.model.Customer;
 
 public interface CustomerRepository extends MongoRepository<Customer, String> {
 

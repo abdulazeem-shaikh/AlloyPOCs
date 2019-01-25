@@ -1,4 +1,4 @@
-package com.test.dao;
+package com.test.model;
 
 import org.springframework.data.annotation.Id;
 
@@ -11,7 +11,6 @@ public class Customer {
     public String firstName;
     public String lastName;
 
-    public Customer() {}
 
     public Customer(String firstName, String lastName) {
         this.firstName = firstName;
@@ -22,6 +21,11 @@ public class Customer {
     public String toString() {
         return String.format("Customer[id=%s, firstName='%s', lastName='%s']",  id, firstName, lastName);
     }
+
+	public Customer() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 }
 
