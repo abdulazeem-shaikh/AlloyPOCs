@@ -5,11 +5,12 @@ import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.test.model.Customer;
+import com.test.model.Product;
 
-public interface CustomerRepository extends MongoRepository<Customer, String> {
+public interface ProductRepository extends MongoRepository<Product, String> {
 
 	public Customer findByFirstName(String firstName);
 
-	public List<Customer> findByLastName(String lastName);
+	public List<Product> findByLastName(String lastName);
 
 }

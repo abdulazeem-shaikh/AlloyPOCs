@@ -14,15 +14,13 @@ public class CustomerController {
 
 	@Inject
 	private CustomerService  customerService;
-	
-	
-	
+		
 	@Path("/getCustomerDetailById")
 	public Customer getCustomerDetailById()
 	{
 		return new Customer();
 	}
-	
+	 
 	@Path("/updateCustomerDetailById")
 	public Customer updateCustomerDetailById()
 	{
@@ -31,7 +29,7 @@ public class CustomerController {
 	
 	
 	@Path("/createCustomer")
-	public Customer createCustomer()
+	public Customer createCustomer() 
 	{
 		return new Customer();
 	}
