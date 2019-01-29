@@ -1,8 +1,9 @@
 package com.alloy.serviceImpl;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.alloy.model.Customer;
@@ -15,10 +16,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Inject
 	CustomerRepository customerRepository;
 
-	@Override
-	public Customer getCustomerDetail(String id) {
- 		return customerRepository.findById(id).get();
- 	}
+	 
 
 	@Override
 	public boolean updateCustomerDetail(Customer customer) {
@@ -28,14 +26,24 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public boolean registerCustomer(Customer customer) {
-		// TODO Auto-generated method stub
-		return false;
+		customerRepository.save(customer);
+		return true;
 	}
 
 	@Override
 	public boolean deleteCustomer() {
-		// TODO Auto-generated method stub
+		customerRepository.deleteAll();		
 		return false;
+	}
+
+	@Override
+	public Customer getCustomerDetail(String firstName) {
+		return customerRepository.findByFirstName(firstName);
+	}
+
+	@Override
+	public List<Customer> getAllCustomer() {
+		return customerRepository.findAll();
 	}
 
 }
