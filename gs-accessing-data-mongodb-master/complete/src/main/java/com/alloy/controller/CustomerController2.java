@@ -1,8 +1,8 @@
 package com.alloy.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -12,21 +12,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alloy.model.Customer;
-import com.alloy.service.CustomerService;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoClients;
 
 @RestController
-@RequestMapping("/root")
-public class CustomerController {
+@RequestMapping("/root2")
+public class CustomerController2 {
 
-	private final static Logger logger = Logger.getLogger(CustomerController.class);
+	private final static Logger logger = Logger.getLogger(CustomerController2.class);
 
-	@Inject
-	private final CustomerService customerService;
-
-	public CustomerController(CustomerService customerService) {
-		this.customerService = customerService;
-
-	}
+	
+	
+ 
+	
+	
 
 	@RequestMapping("/createcustomer")
 	public String  createCustomer() {
