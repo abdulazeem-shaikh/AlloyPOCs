@@ -3,11 +3,13 @@ package com.alloy.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,11 +31,8 @@ public class CustomerController {
 	}
 
 	@RequestMapping("/createcustomer")
-	public String  createCustomer() {
-		Customer customer = new Customer();
-		customer.setFirstName("delete");
-		customer.setLastName("Azeem");
-		customer.setLastName("12345564575");		
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String createCustomer(@RequestBody Customer customer) {
 		logger.info("inserting the new customer detail into Mongo db");
 		customerService.registerCustomer(customer);
 		logger.info("inserting the new customer detail into Mongo db");
@@ -49,7 +48,7 @@ public class CustomerController {
 
 	@Path("/updateCustomerDetailById")
 	public Customer updateCustomerDetailById() {
-		return new Customer();
+		return null;
 	}
 
 	@RequestMapping("/deleteCustomer")

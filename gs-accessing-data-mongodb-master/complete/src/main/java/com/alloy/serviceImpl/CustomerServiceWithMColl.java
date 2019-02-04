@@ -1,94 +1,71 @@
 package com.alloy.serviceImpl;
 
 import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.exists;
+import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.gt;
+import static com.mongodb.client.model.Filters.lt;
 import static com.mongodb.client.model.Filters.lte;
-import static com.mongodb.client.model.Sorts.descending;
+import static com.mongodb.client.model.Updates.inc;
+import static com.mongodb.client.model.Updates.set;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-import org.bson.Document;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import com.alloy.model.AmountRange;
 import com.alloy.model.Customer;
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import static com.mongodb.client.model.Accumulators.sum;
-import static com.mongodb.client.model.Aggregates.group;
-import static com.mongodb.client.model.Aggregates.match;
-import static com.mongodb.client.model.Aggregates.project;
-import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.exists;
-import static com.mongodb.client.model.Filters.gt;
-import static com.mongodb.client.model.Filters.gte;
-import static com.mongodb.client.model.Filters.lt;
-import static com.mongodb.client.model.Filters.lte;
-import static com.mongodb.client.model.Projections.excludeId;
-import static com.mongodb.client.model.Sorts.descending;
-import static com.mongodb.client.model.Updates.inc;
-import static com.mongodb.client.model.Updates.set;
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-import com.mongodb.Block;
-import com.mongodb.client.AggregateIterable;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.BulkWriteOptions;
-import com.mongodb.client.model.DeleteOneModel;
-import com.mongodb.client.model.InsertOneModel;
-import com.mongodb.client.model.ReplaceOneModel;
-import com.mongodb.client.model.UpdateOneModel;
-import com.mongodb.client.model.WriteModel;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
 @Repository
-public class CustomerServiceImpl2 {
+public class CustomerServiceWithMColl {
 
-	MongoCollection<Document> collection;
-
-	public boolean insertDoc(Document doc1) {
-		Document doc = new Document("name", new Customer());
-		collection.insertOne(doc);
-		return true;
-	}
-
+	@Autowired
+	MongoCollection<Customer> collection;
+ 
+	private final static Logger logger = Logger.getLogger(CustomerServiceWithMColl.class);
+	
 	public Customer getFirstdoc() throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
-		Document myDoc = collection.find().first();
-		return mapper.readValue(myDoc.toJson(), Customer.class);
-
+		Customer customer = collection.find().first();
+ 		/*logger.info("Getting the first doc");*/
+ 		return  customer;
 	}
 
-	public boolean insertMultiDoc() {
-		List<Document> documents = new ArrayList<Document>();
-		for (int i = 0; i < 100; i++) {
-			documents.add(new Document("" + i, new Customer()));
+	
+	
+	public boolean insertMultiDoc(List<Customer> list) {
+		List<Customer> customer = new ArrayList<Customer>();
+		for (long i = 0; i < 100; i++) {
+			customer.add(new Customer(String.valueOf(Math.abs(new Random().nextLong())) , "firstName"+i, "lastName"+i, i));
 		}
-		collection.insertMany(documents);
-		return false;
+		collection.insertMany(list);
+		logger.info("inserted successfully");
+		return true;
 	}
+	
 
 	public List<Customer> getListOfCustomerdoc() throws JsonParseException, JsonMappingException, IOException {
 		List<Customer> customer = new ArrayList<Customer>();
 		ObjectMapper mapper = new ObjectMapper();
-		MongoCursor<Document> cursor = collection.find().iterator();
+		MongoCursor<Customer> cursor = collection.find().iterator();
 		try {
 			while (cursor.hasNext()) {
-				System.out.println(cursor.next().toJson());
-
-				customer.add(mapper.readValue(cursor.next().toJson(), Customer.class));
+				//System.out.println(cursor.next().toJson());
+				//customer.add(mapper.readValue(cursor.next().toJson(), Customer.class));
+				customer.add(cursor.next());
+			
 			}
 		} finally {
 			cursor.close();
@@ -96,31 +73,33 @@ public class CustomerServiceImpl2 {
 		return customer;
 	}
 
-	public List<Customer> getCustomerByRange() throws JsonParseException, JsonMappingException, IOException {
+	
+	public List<Customer> getCustomerByRange(int returnedAmount) throws JsonParseException, JsonMappingException, IOException {
 		List<Customer> customer = new ArrayList<Customer>();
 		ObjectMapper mapper = new ObjectMapper();
-		MongoCursor<Document> cursor = collection.find(gt("i", 50)).iterator();
+		MongoCursor<Customer> cursor = collection.find(gt("returnedAmount", returnedAmount)).iterator();
 		try {
 			while (cursor.hasNext()) {
-				System.out.println(cursor.next().toJson());
-
-				customer.add(mapper.readValue(cursor.next().toJson(), Customer.class));
+				// System.out.println(cursor.next().toJson());
+				customer.add(cursor.next());
+				// customer.add(mapper.readValue(cursor.next().toJson(), Customer.class));
 			}
 		} finally {
 			cursor.close();
 		}
 		return customer;
 	}
-
+	
+	
 	public List<Customer> getAllCustomerDoc() throws JsonParseException, JsonMappingException, IOException {
 		List<Customer> customer = new ArrayList<Customer>();
 		ObjectMapper mapper = new ObjectMapper();
-		MongoCursor<Document> cursor = collection.find().iterator();
+		MongoCursor<Customer> cursor = collection.find().iterator();
 		try {
 			while (cursor.hasNext()) {
-				System.out.println(cursor.next().toJson());
-
-				customer.add(mapper.readValue(cursor.next().toJson(), Customer.class));
+				//System.out.println(cursor.next().toJson());
+				customer.add(cursor.next());
+				//customer.add(mapper.readValue(cursor.next().toJson(), Customer.class));
 			}
 		} finally {
 			cursor.close();
@@ -130,15 +109,15 @@ public class CustomerServiceImpl2 {
 
 	//
 
-	public List<Customer> getAllCustomerDocByMultiCondition()
+	public List<Customer> getAllCustomerDocByMultiCondition( AmountRange range)
 			throws JsonParseException, JsonMappingException, IOException {
 		List<Customer> customer = new ArrayList<Customer>();
 		ObjectMapper mapper = new ObjectMapper();
-		MongoCursor<Document> cursor = collection.find(and(gt("i", 50), lte("i", 100))).iterator();
+		MongoCursor<Customer> cursor = collection.find(and(gt("returnedAmount", range.start), lte("returnedAmount", range.end)))
+				.iterator();
 		try {
 			while (cursor.hasNext()) {
-				System.out.println(cursor.next().toJson());
-				customer.add(mapper.readValue(cursor.next().toJson(), Customer.class));
+				customer.add(cursor.next());
 			}
 		} finally {
 			cursor.close();
@@ -149,9 +128,8 @@ public class CustomerServiceImpl2 {
 	public List<Customer> sortCustomerInDesc() throws JsonParseException, JsonMappingException, IOException {
 		List<Customer> customer = new ArrayList<Customer>();
 		ObjectMapper mapper = new ObjectMapper();
-		Document doc = collection.find(exists("i")).sort(descending("i")).first();
-		customer.add(mapper.readValue(doc.toJson(), new TypeReference<List<Customer>>() {
-		}));
+		Customer doc = (Customer) collection.find(exists("returnedAmount")).sort(descending("returnedAmount")).first();
+ 
 		return customer;
 	}
 
@@ -218,7 +196,10 @@ public class CustomerServiceImpl2 {
 	
 	
 	
-	
+	private void mian() {
+		// TODO Auto-generated method stub
+    System.out.println(System.currentTimeMillis());
+	}
 	
 	
 }

@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ 
 
 package com.alloy.serviceImpl;
 
@@ -54,15 +54,15 @@ import com.mongodb.client.model.WriteModel;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
-/**
+*//**
  * The QuickTour code example see: https://mongodb.github.io/mongo-java-driver/3.0/getting-started
- */
+ *//*
 public class QuickTour {
-    /**
+    *//**
      * Run this main method to see the output of this quick example.
      *
      * @param args takes an optional single argument for the connection string
-     */
+     *//*
     public static void main(final String[] args) {
         MongoClient mongoClient;
 
@@ -218,3 +218,4 @@ public class QuickTour {
      //   mongoClient.close();
     }
 }
+*/

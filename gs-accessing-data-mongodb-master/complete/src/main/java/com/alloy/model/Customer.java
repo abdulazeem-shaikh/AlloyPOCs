@@ -1,28 +1,27 @@
 package com.alloy.model;
 
-import org.springframework.data.annotation.Id;
+import java.util.List;
 
 public class Customer {
-
-	@Id
-	public String id;
+	public String customerNumber;
 	public String firstName;
 	public String lastName;
+	public double returnedAmount;
 
-	public Customer(String string, String string2) {
-		// TODO Auto-generated constructor stub
+	public Customer(String customerNumber, String firstName, String lastName, double returnedAmount) {
+		super();
+		this.customerNumber = customerNumber;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.returnedAmount = returnedAmount;
 	}
 
-	public Customer() {
-		// TODO Auto-generated constructor stub
+	public String getCustomerNumber() {
+		return customerNumber;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
+	public void setCustomerNumber(String customerNumber) {
+		this.customerNumber = customerNumber;
 	}
 
 	public String getFirstName() {
@@ -40,5 +39,19 @@ public class Customer {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+
+	public double getReturnedAmount() {
+		return returnedAmount;
+	}
+
+	public void setReturnedAmount(double returnedAmount) {
+		this.returnedAmount = returnedAmount;
+	}
+
+	public Customer() {
+		super();
+	}
+	
+	
 
 }

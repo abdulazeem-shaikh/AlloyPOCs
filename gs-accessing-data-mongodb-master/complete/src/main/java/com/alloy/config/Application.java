@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.alloy.repository.CustomerRepository;
 
-@SpringBootApplication(scanBasePackages = {"com.alloy.*" , "com.alloy.controller" })
+@SpringBootApplication(scanBasePackages = {"com.alloy.*"  /*, "com.alloy.controller" */})
 public class Application {
 
 	@Autowired
